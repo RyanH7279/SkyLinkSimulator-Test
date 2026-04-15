@@ -394,7 +394,7 @@ def main():
               as executor):
             futures = []
             for rep_no in range(args.repetitions):
-                for gf in [2]:
+                for gf in [args.growth_factor]:
                     for strategy_index, strategy in enumerate(strategies):
                         futures.append(
                             executor.submit(
