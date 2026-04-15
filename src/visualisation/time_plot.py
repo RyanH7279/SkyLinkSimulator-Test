@@ -3,6 +3,7 @@ import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
+from pathlib import Path
 
 plt.rcParams.update({
     "text.usetex": True,
@@ -81,8 +82,10 @@ def plot_evaluation_data(
     orbital_period_time_steps = 1.82 * 60 * 4
     generation_rate = None
     x_data = None
+    x_label = "Days"
 
     extra_artists = []
+    loaded_any_data = False
 
     for file_no in range(len(filenames)):
         filename = filenames[file_no]
@@ -106,6 +109,8 @@ def plot_evaluation_data(
         except FileNotFoundError:
             print(f"File not found: {filename}")
             continue
+
+        loaded_any_data = True
 
         metric_data = np.array([[d[metric] for d in run][start:end] for run in data])
         metric_data_mean = np.mean(metric_data, axis=0)
@@ -155,6 +160,11 @@ def plot_evaluation_data(
             linewidth=2 if label == "SKYLINK" else 1
         )
 
+    if not loaded_any_data:
+        print(f"No valid data loaded for metric '{metric}'. Skipping plot.")
+        plt.close(fig)
+        return
+
     if metric == "throughput" and generation_rate is not None:
         generation_rate_smooth = sliding_window_mean(generation_rate, window_size)
         ax.plot(x_data, generation_rate_smooth, linestyle='--', color='black', linewidth=2)
@@ -200,8 +210,11 @@ def plot_evaluation_data(
     )
     extra_artists.append(leg)
 
-    out_path = pth + name + "_" + metric + "_" + str(gsl_failures) + "_" + str(isl_failures) + "_" + str(gf) + ".pdf"
+    output_dir = Path(pth)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    out_path = output_dir / f"{name}_{metric}_{gsl_failures}_{isl_failures}_{gf}.pdf"
     fig.savefig(out_path, bbox_inches="tight", bbox_extra_artists=extra_artists)
+    print(f"Saved plot to: {out_path.resolve()}")
     plt.show()
     plt.close(fig)
 
@@ -227,9 +240,9 @@ name = "time_plot"
 window_size = 4 * 60 * 12
 start = 0
 end = 4 * 60 * 24 * 10
-pth = "results"
+pth = "results/"
 g = 2.0
-gsl_f = 1
+gsl_f = 0
 isl_f = 0
 no_of_runs = 10
 pths = get_pths(gsl_f,isl_f, g)
