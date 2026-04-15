@@ -1,12 +1,17 @@
 import _pickle
 import pickle
+import shutil
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from pathlib import Path
 
+HAS_LATEX = shutil.which("latex") is not None
+if not HAS_LATEX:
+    print("LaTeX executable not found. Falling back to Matplotlib's internal text rendering.")
+
 plt.rcParams.update({
-    "text.usetex": True,
+    "text.usetex": HAS_LATEX,
     "font.size": 32,
     "font.family": "serif",
     "font.serif": ["Times New Roman"],
@@ -75,6 +80,17 @@ def get_metric_key(run_data, metric):
 
     return None
 
+
+def get_metric_series(run_data, metric, metric_key):
+    if metric_key is not None:
+        return [d[metric_key] for d in run_data]
+
+    if metric == "fairness" and run_data and "drop_rate" in run_data[0]:
+        print("Metric 'fairness' missing. Falling back to derived fairness = 1 - drop_rate.")
+        return [1 - d["drop_rate"] for d in run_data]
+
+    return None
+
 def draw_generation_rate_box(x_upper, generation_rate_smooth, label='Generation Rate'):
     x_pos = 0.75 * x_upper
     y_pos = 1.185 * np.mean(generation_rate_smooth)
@@ -138,7 +154,9 @@ def plot_evaluation_data(
             continue
 
         selected_metric_key = get_metric_key(data[0], metric)
-        if selected_metric_key is None:
+        metric_series = [get_metric_series(run, metric, selected_metric_key) for run in data]
+        metric_series = [series for series in metric_series if series is not None]
+        if not metric_series:
             available_keys = sorted(data[0][0].keys()) if data[0] else []
             print(
                 f"Metric '{metric}' not found in {filename}. "
@@ -147,7 +165,7 @@ def plot_evaluation_data(
             continue
 
         loaded_any_data = True
-        metric_data = np.array([[d[selected_metric_key] for d in run][start:end] for run in data])
+        metric_data = np.array([series[start:end] for series in metric_series])
         metric_data_mean = np.mean(metric_data, axis=0)
 
         if metric == "cost":
