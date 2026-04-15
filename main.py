@@ -12,6 +12,7 @@ from src.strategies.references.random import Random
 from src.strategies.references.q_learning import QLearning
 from src.strategies.ucb.tile_coded_ucb import TileCodedUCB
 from src.strategies.ucb.ucb import UCB
+from src.strategies.thompson.tile_coded_thompson import TileCodedThompson
 from src.utils import Time
 from src.groundstation import Groundstation
 from src.paketmanager import PaketManager
@@ -322,7 +323,8 @@ def main():
         Gounder(),
         UCB(),
         QLearning(alpha=0.15, gamma=0.90, epsilon=0.15),
-        TileCodedUCB(['distance'], 5e5, 2)
+        TileCodedUCB(['distance'], 5e5, 2),
+        TileCodedThompson(['distance'], 5e5, 2)
     ]
 
     debug = False
