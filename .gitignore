@@ -19,6 +19,7 @@ data/**/*.h5
 results/**
 logging/**
 *.csv
+*.bsp
 
 # Plots/figures
 *.png
