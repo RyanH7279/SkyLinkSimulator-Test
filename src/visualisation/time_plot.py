@@ -45,8 +45,35 @@ markers = ['d',
            '<',
            ]
 
+METRIC_ALIASES = {
+    "fairness": ["fairness", "jains_fairness_index", "jain_fairness_index", "fairness_index"],
+}
+
 def sliding_window_mean(data, ws):
     return np.convolve(data, np.ones(ws) / ws, mode='valid')
+
+
+def get_metric_key(run_data, metric):
+    if not run_data:
+        return None
+
+    available_keys = run_data[0].keys()
+    if metric in available_keys:
+        return metric
+
+    for alias in METRIC_ALIASES.get(metric, []):
+        if alias in available_keys:
+            return alias
+
+    lower_to_original = {k.lower(): k for k in available_keys}
+    if metric.lower() in lower_to_original:
+        return lower_to_original[metric.lower()]
+
+    for alias in METRIC_ALIASES.get(metric, []):
+        if alias.lower() in lower_to_original:
+            return lower_to_original[alias.lower()]
+
+    return None
 
 def draw_generation_rate_box(x_upper, generation_rate_smooth, label='Generation Rate'):
     x_pos = 0.75 * x_upper
@@ -110,9 +137,17 @@ def plot_evaluation_data(
             print(f"File not found: {filename}")
             continue
 
-        loaded_any_data = True
+        selected_metric_key = get_metric_key(data[0], metric)
+        if selected_metric_key is None:
+            available_keys = sorted(data[0][0].keys()) if data[0] else []
+            print(
+                f"Metric '{metric}' not found in {filename}. "
+                f"Available keys: {available_keys}. Skipping file."
+            )
+            continue
 
-        metric_data = np.array([[d[metric] for d in run][start:end] for run in data])
+        loaded_any_data = True
+        metric_data = np.array([[d[selected_metric_key] for d in run][start:end] for run in data])
         metric_data_mean = np.mean(metric_data, axis=0)
 
         if metric == "cost":
