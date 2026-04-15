@@ -130,13 +130,9 @@ def plot_evaluation_data(
             print(f"File not found: {filename}")
             continue
 
-        resolved_metric_key = resolve_metric_key(data[0], metric)
-        if resolved_metric_key is None:
-            print(f"Metric '{metric}' not found in file: {filename}")
-            continue
-
         loaded_any_data = True
-        metric_data = np.array([[d[resolved_metric_key] for d in run][start:end] for run in data])
+
+        metric_data = np.array([[d[metric] for d in run][start:end] for run in data])
         metric_data_mean = np.mean(metric_data, axis=0)
 
         if metric == "cost":
