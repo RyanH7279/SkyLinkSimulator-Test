@@ -36,6 +36,7 @@ labels = [
     "Dijkstra",
     "KSP",
     "Q-Learning",
+    "Thompson",
     "NC-SKYLINK",
     "SKYLINK",
 ]
@@ -282,6 +283,7 @@ def get_pths(gsl_failures, isl_failures, gf):
         "evaluation_data_dijkstra_" + suffix + ".npy",
         "evaluation_data_gounder_" + suffix + ".npy",
         "evaluation_data_q_learning_" + suffix + ".npy",
+        "evaluation_data_tile_coded_thompson_0500000_2_" + suffix + ".npy",
         "evaluation_data_ucb_" + suffix + ".npy",
         "evaluation_data_tile_coded_ucb_0500000_2_" + suffix + ".npy",
     ])
