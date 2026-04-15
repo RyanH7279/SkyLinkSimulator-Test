@@ -84,7 +84,7 @@ def worker(slot, workers, file_indices, total_timepoints, output_dir, overwrite=
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Multithreaded satellite position precompute generator.")
-    parser.add_argument("--workers", type=int, default=4, help="Number of worker threads.")
+    parser.add_argument("--workers", type=int, default=8, help="Number of worker threads.")
     parser.add_argument("--total_days", type=int, default=DEFAULT_TOTAL_DAYS, help="Total days to generate.")
     parser.add_argument(
         "--total_timepoints",

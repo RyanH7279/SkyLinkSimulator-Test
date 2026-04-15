@@ -273,11 +273,11 @@ def plot_evaluation_data(
 
     output_dir = Path(pth)
     output_dir.mkdir(parents=True, exist_ok=True)
-    out_path = output_dir / f"{name}_{metric}_{gsl_failures}_{isl_failures}_{gf}.pdf"
+    out_path = output_dir / f"{name}_{metric}_{gsl_failures}_{isl_failures}_{gf}.png"
     fig.savefig(out_path, bbox_inches="tight", bbox_extra_artists=extra_artists)
     print(f"Saved plot to: {out_path.resolve()}")
-    plt.show()
-    plt.close(fig)
+    # plt.show()
+    # plt.close(fig)
 
 
 def get_pths(gsl_failures, isl_failures, gf):
