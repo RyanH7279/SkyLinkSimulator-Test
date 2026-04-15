@@ -36,6 +36,7 @@ labels = [
     "Dijkstra",
     "KSP",
     "Q-Learning",
+    "Thompson",
     "NC-SKYLINK",
     "SKYLINK",
 ]
@@ -124,6 +125,7 @@ def plot_evaluation_data(
     x_lower = 0
     orbital_period_time_steps = 1.82 * 60 * 4
     generation_rate = None
+    generation_x_data = None
     x_data = None
     x_label = "Days"
 
@@ -205,6 +207,9 @@ def plot_evaluation_data(
             x_upper = days + x_lower
             x_label = 'Days'
 
+        if metric == "throughput" and generation_x_data is None:
+            generation_x_data = x_data.copy()
+
         label = labels[file_no]
         ax.plot(
             x_data, metric_data_smooth,
@@ -220,7 +225,11 @@ def plot_evaluation_data(
 
     if metric == "throughput" and generation_rate is not None:
         generation_rate_smooth = sliding_window_mean(generation_rate, window_size)
-        ax.plot(x_data, generation_rate_smooth, linestyle='--', color='black', linewidth=2)
+        generation_x = generation_x_data if generation_x_data is not None else x_data
+        min_len = min(len(generation_x), len(generation_rate_smooth))
+        generation_x = generation_x[:min_len]
+        generation_rate_smooth = generation_rate_smooth[:min_len]
+        ax.plot(generation_x, generation_rate_smooth, linestyle='--', color='black', linewidth=2)
         draw_generation_rate_box(x_upper, generation_rate_smooth)
 
     if gsl_failures or isl_failures:
@@ -275,6 +284,12 @@ def plot_evaluation_data(
 def get_pths(gsl_failures, isl_failures, gf):
 
     suffix = str(int(gsl_failures)) + "_" + str(int(isl_failures)) + "_" + str(gf) + "_0"
+    results_dir = Path(pth)
+    thompson_filename = "evaluation_data_tile_coded_thompson_0500000_2_" + suffix + ".npy"
+    if not (results_dir / thompson_filename).exists():
+        thompson_candidates = sorted(results_dir.glob(f"evaluation_data_*thompson*_{suffix}.npy"))
+        if thompson_candidates:
+            thompson_filename = thompson_candidates[0].name
 
     filenames = ([
         "evaluation_data_random_" + suffix + ".npy",
@@ -282,6 +297,7 @@ def get_pths(gsl_failures, isl_failures, gf):
         "evaluation_data_dijkstra_" + suffix + ".npy",
         "evaluation_data_gounder_" + suffix + ".npy",
         "evaluation_data_q_learning_" + suffix + ".npy",
+        thompson_filename,
         "evaluation_data_ucb_" + suffix + ".npy",
         "evaluation_data_tile_coded_ucb_0500000_2_" + suffix + ".npy",
     ])
