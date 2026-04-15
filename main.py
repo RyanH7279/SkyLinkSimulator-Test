@@ -5,6 +5,7 @@ import random
 import h5py
 import numpy as np
 import argparse
+from pathlib import Path
 from src.strategies.references.bentpipe import BentPipe
 from src.strategies.references.dijkstra import Dijkstra
 from src.strategies.references.gounder import Gounder
@@ -140,6 +141,55 @@ def update_groundstations(groundstations, satellites):
                 gsls += 1
 
 
+def _get_available_indices(pattern):
+    base_path = Path(pattern)
+    directory = base_path.parent
+    prefix, suffix = base_path.name.split('{index}')
+
+    if not directory.exists():
+        return set()
+
+    indices = set()
+    for file in directory.iterdir():
+        if not file.is_file():
+            continue
+        name = file.name
+        if name.startswith(prefix) and name.endswith(suffix):
+            index_str = name[len(prefix):len(name) - len(suffix)]
+            if index_str.isdigit():
+                indices.add(int(index_str))
+
+    return indices
+
+
+def get_max_supported_steps():
+    required_patterns = [
+        'data/grid/grid_{index}.h5',
+        'data/visibility/groundstation_visibility/satellite_visibility_groundstations_{index}.h5',
+        'data/positions/satellite_positions/satellite_positions_{index}.h5',
+        'data/data_generation/satellite_data_generation_{index}.h5'
+    ]
+
+    available_index_sets = [_get_available_indices(pattern) for pattern in required_patterns]
+    common_indices = set.intersection(*available_index_sets) if available_index_sets else set()
+
+    if not common_indices:
+        raise FileNotFoundError(
+            'No complete data chunk found. Ensure matching indexed H5 files exist for grid, visibility, '
+            'positions, and data generation.'
+        )
+
+    expected_indices = set(range(max(common_indices) + 1))
+    missing_indices = sorted(expected_indices - common_indices)
+    if missing_indices:
+        raise FileNotFoundError(
+            f'Missing required indexed data files for indices: {missing_indices}. '
+            'Provide a complete contiguous index range starting at 0.'
+        )
+
+    return len(common_indices) * TIME_STEPS_PER_FILE
+
+
 def network_init():
     print("INITIALIZATION")
 
@@ -172,6 +222,9 @@ def run(strategy, rep_no, growth_factor=1, gsl_failures=False, isl_failures=Fals
     set_seed(seed)
 
     satellites, groundstations, paket_manager = network_init()
+
+    max_supported_steps = get_max_supported_steps()
+    max_time_steps = min(max_time_steps, max_supported_steps)
 
     if logging:
         with open("logging/old/log_groundstations.csv", "a") as file:
@@ -314,6 +367,12 @@ def main():
     parser.add_argument("--repetitions", type=int, default=1, help="Number of repetitions for each strategy.")
 
     args = parser.parse_args()
+
+    max_supported_steps = get_max_supported_steps()
+    if args.max_time_steps > max_supported_steps:
+        print(f"[WARN] Requested --max_time_steps={args.max_time_steps}, but only {max_supported_steps} "
+              "steps are available from local data files. Clamping to available range.")
+        args.max_time_steps = max_supported_steps
 
     strategies = [
         Random(),
