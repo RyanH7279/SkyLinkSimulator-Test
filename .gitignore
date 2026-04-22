@@ -16,7 +16,6 @@ __pycache__/
 
 # Data & results
 data/**/*.h5
-results/**
 logging/**
 *.csv
 src/calculators/de440.bsp
