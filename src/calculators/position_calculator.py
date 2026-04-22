@@ -14,8 +14,8 @@ time_interval_sec = 15
 total_days = 7
 
 # Calculate the number of time points
-# total_seconds = total_days * 24 * 60 * 60
-total_seconds = 38000*15  # total_days * 24 * 60 * 60
+total_seconds = total_days * 24 * 60 * 60
+# total_seconds = 38000*15  # total_days * 24 * 60 * 60
 num_timepoints = total_seconds // time_interval_sec
 max_timepoints_per_file = 1000  # Define max time points per file
 
@@ -25,8 +25,8 @@ def calculate_satellite_positions(time):
 
 
 # Create multiple HDF5 files and datasets
-file_index = 35
-time_counter = 35000
+file_index = 0
+time_counter = 0
 current_time = copy.deepcopy(cosmicbeats.start_time)
 current_time = current_time.add_seconds(cosmicbeats.time_delta * time_counter)
 
