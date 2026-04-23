@@ -1,11 +1,16 @@
 import pickle
+import shutil
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.colors as mcolors
 from pathlib import Path
 
+HAS_LATEX = shutil.which("latex") is not None
+if not HAS_LATEX:
+    print("LaTeX executable not found. Falling back to Matplotlib's internal text rendering.")
+
 plt.rcParams.update({
-    "text.usetex": True,
+    "text.usetex": HAS_LATEX,
     "font.size": 30,
     "font.family": "serif",
     "font.serif": ["Times New Roman"],
