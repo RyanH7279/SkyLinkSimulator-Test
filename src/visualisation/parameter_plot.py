@@ -1,8 +1,13 @@
 import os
+import shutil
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 import pickle
+
+HAS_LATEX = shutil.which("latex") is not None
+if not HAS_LATEX:
+    print("LaTeX executable not found. Falling back to Matplotlib's internal text rendering.")
 
 
 def load_metric_data_from_file(filepath, metric):
@@ -48,7 +53,7 @@ def plot_single_heatmap(path, gf):
     print("Shape of avg_values:", avg_values.shape)
 
     plt.rcParams.update({
-        "text.usetex": True,
+        "text.usetex": HAS_LATEX,
         "font.family": "serif",
         "font.size": 20,
         "font.serif": ["Times New Roman"]
