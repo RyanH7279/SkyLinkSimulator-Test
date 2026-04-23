@@ -136,8 +136,8 @@ def plot_bar_charts(avgs, stds, metric):
 
     ax.grid(axis='y', linestyle='--', linewidth=0.5)
     plt.tight_layout()
-    plt.savefig(pth + name + "_" + metric + ".pdf")
-    plt.show()
+    plt.savefig(pth + name + "_" + metric + ".png")
+    # plt.show()
 
 
 def get_paths(sat_failures, gs_failures, gfs):

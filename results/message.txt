@@ -1,0 +1,130 @@
+cost
+Random (avg) 11.341641222626219
+Random (std) 1.8935173566501224
+
+Bent-Pipe (avg) 7.599831723661936
+Bent-Pipe (std) 0.6353136371383165
+
+Dijkstra (avg) 64.599179600818
+Dijkstra (std) 12.608367088300119
+
+KSP (avg) 15.161867091578223
+KSP (std) 7.505134663083225
+
+Q-Learning (avg) 7.384331393317815
+Q-Learning (std) 1.9291428071275385
+
+Thompson (avg) 5.2728912106862404
+Thompson (std) 0.4376394668615843
+
+NC-SKYLINK (avg) 6.062454465483337
+NC-SKYLINK (std) 0.6815525449563707
+
+SKYLINK (avg) 5.375065894336753
+SKYLINK (std) 0.747613693209146
+
+Saved plot to: C:\SkyLinkSimulator-Test\results\time_plot_cost_0_0_2.0.png
+drop_rate
+Random (avg) 2.0452037818083277
+Random (std) 0.9882851537615824
+
+Bent-Pipe (avg) 1.0588340797454872
+Bent-Pipe (std) 0.33233736689880855
+
+Dijkstra (avg) 30.958531860191936
+Dijkstra (std) 6.462801190556924
+
+KSP (avg) 5.545304367077834
+KSP (std) 3.871865010556479
+
+Q-Learning (avg) 0.569490740382678
+Q-Learning (std) 0.88303133241968
+
+Thompson (avg) 0.2350068871238142
+Thompson (std) 0.20140224419644137
+
+NC-SKYLINK (avg) 0.2594540632008338
+NC-SKYLINK (std) 0.3383556260051375
+
+SKYLINK (avg) 0.2524049109530587
+SKYLINK (std) 0.3547043752088773
+
+Saved plot to: C:\SkyLinkSimulator-Test\results\time_plot_drop_rate_0_0_2.0.png
+avg_delay
+Random (avg) 7.402146431159377
+Random (std) 0.38324426040744985
+
+Bent-Pipe (avg) 5.540746456846058
+Bent-Pipe (std) 0.13477084858616137
+
+Dijkstra (avg) 3.875980745937002
+Dijkstra (std) 0.12268041637002654
+
+KSP (avg) 4.307094649195428
+KSP (std) 0.10473131233340806
+
+Q-Learning (avg) 6.282870147089569
+Q-Learning (std) 0.4833493317373741
+
+Thompson (avg) 4.814156803478609
+Thompson (std) 0.2249942932814474
+
+NC-SKYLINK (avg) 5.558007226978803
+NC-SKYLINK (std) 0.16123572081818469
+
+SKYLINK (avg) 4.882669987362253
+SKYLINK (std) 0.23984219301323767
+
+Saved plot to: C:\SkyLinkSimulator-Test\results\time_plot_avg_delay_0_0_2.0.png
+throughput
+Random (avg) 570.3687753154871
+Random (std) 71.73674798766649
+
+Bent-Pipe (avg) 575.9779162853079
+Bent-Pipe (std) 71.204129828799
+
+Dijkstra (avg) 398.08813002439433
+Dijkstra (std) 27.402382126117978
+
+KSP (avg) 547.9845790239524
+KSP (std) 55.269969604449265
+
+Q-Learning (avg) 578.8549789799912
+Q-Learning (std) 71.91337853784874
+
+Thompson (avg) 580.7928780816177
+Thompson (std) 71.93939235762863
+
+NC-SKYLINK (avg) 580.6519179969749
+NC-SKYLINK (std) 71.95219006265073
+
+SKYLINK (avg) 580.6875488165005
+SKYLINK (std) 71.9177298186615
+
+Saved plot to: C:\SkyLinkSimulator-Test\results\time_plot_throughput_0_0_2.0.png
+avg_hops
+Random (avg) 1.4308453584795993
+Random (std) 0.08276022546043968
+
+Bent-Pipe (avg) 1.0
+Bent-Pipe (std) 0.0
+
+Dijkstra (avg) 1.0224465946521115
+Dijkstra (std) 0.005686823907500639
+
+KSP (avg) 1.0201467099918735
+KSP (std) 0.00863940213870627
+
+Q-Learning (avg) 1.1120315742422398
+Q-Learning (std) 0.0916402968923696
+
+Thompson (avg) 1.0232968212975462
+Thompson (std) 0.012715198556268788
+
+NC-SKYLINK (avg) 1.0230958265363719
+NC-SKYLINK (std) 0.017482281558552158
+
+SKYLINK (avg) 1.02476613002208
+SKYLINK (std) 0.01840113918750566
+
+Saved plot to: C:\SkyLinkSimulator-Test\results\time_plot_avg_hops_0_0_2.0.png

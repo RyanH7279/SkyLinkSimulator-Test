@@ -73,8 +73,8 @@ def plot_single_heatmap(path, gf):
     plt.xlabel(r"Distance Precision")
     plt.ylabel(r"Number of Grids")
     plt.tight_layout()
-    plt.savefig(path + metric + "_" + str(gf) + "_heatmap.pdf")
-    plt.show()
+    plt.savefig(path + metric + "_" + str(gf) + "_heatmap.png")
+    # plt.show()
 
 
 plot_single_heatmap("results/", 2.0)
