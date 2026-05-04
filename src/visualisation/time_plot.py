@@ -309,9 +309,9 @@ window_size = 4 * 60 * 12
 start = 0
 end = 4 * 60 * 24 * 10
 pth = "results/"
-g = 2.0
+g = 1.0
 gsl_f = 0
-isl_f = 1
+isl_f = 0
 no_of_runs = 10
 pths = get_pths(gsl_f,isl_f, g)
 
